@@ -22,6 +22,12 @@ if(MSVC AND nanopb_MSVC_STATIC_RUNTIME)
     endforeach(flag_var)
 endif()
 
+
+add_custom_target(
+    protoc-nanopb
+    COMMAND make
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/generator/proto
+)
 add_library(libprotobuf-nanopb STATIC
     pb.h
     pb_common.h
@@ -30,6 +36,8 @@ add_library(libprotobuf-nanopb STATIC
     pb_encode.c
     pb_decode.h
     pb_decode.c)
+
+add_dependencies(libprotobuf-nanopb protoc-nanopb)
 
 target_include_directories(libprotobuf-nanopb INTERFACE
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
